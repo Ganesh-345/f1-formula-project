@@ -1,0 +1,16 @@
+{
+	"name": "ds_audi_logs",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_AzureDatabricksDeltaLake",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Project/Health care revenue management/Source and target"
+		},
+		"annotations": [],
+		"type": "AzureDatabricksDeltaLakeDataset",
+		"schema": []
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

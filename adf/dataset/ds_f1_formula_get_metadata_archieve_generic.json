@@ -1,0 +1,109 @@
+{
+	"name": "ds_f1_formula_get_metadata_archieve_generic",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_stdevelopmentgani",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"folder_name": {
+				"type": "string"
+			},
+			"file_name": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "Parquet",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileSystem": "bronze"
+			},
+			"compressionCodec": "snappy"
+		},
+		"schema": [
+			{
+				"name": "TransactionID",
+				"type": "UTF8"
+			},
+			{
+				"name": "EncounterID",
+				"type": "UTF8"
+			},
+			{
+				"name": "FK_PatientID",
+				"type": "UTF8"
+			},
+			{
+				"name": "FK_DeptID",
+				"type": "UTF8"
+			},
+			{
+				"name": "ICDCode",
+				"type": "UTF8"
+			},
+			{
+				"name": "ProcedureCode",
+				"type": "INT32"
+			},
+			{
+				"name": "VisitType",
+				"type": "UTF8"
+			},
+			{
+				"name": "VisitDate",
+				"type": "DATE"
+			},
+			{
+				"name": "ServiceDate",
+				"type": "DATE"
+			},
+			{
+				"name": "PaidDate",
+				"type": "DATE"
+			},
+			{
+				"name": "Amount",
+				"type": "DOUBLE"
+			},
+			{
+				"name": "PaidAmount",
+				"type": "DOUBLE"
+			},
+			{
+				"name": "AmountType",
+				"type": "UTF8"
+			},
+			{
+				"name": "ClaimID",
+				"type": "UTF8"
+			},
+			{
+				"name": "PayorID",
+				"type": "UTF8"
+			},
+			{
+				"name": "LineOfBusiness",
+				"type": "UTF8"
+			},
+			{
+				"name": "MedicaidID",
+				"type": "UTF8"
+			},
+			{
+				"name": "MedicareID",
+				"type": "UTF8"
+			},
+			{
+				"name": "datasource",
+				"type": "UTF8"
+			},
+			{
+				"name": "refreshed_at",
+				"type": "INT96"
+			}
+		]
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

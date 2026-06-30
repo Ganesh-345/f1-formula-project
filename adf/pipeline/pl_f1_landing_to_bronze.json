@@ -1,0 +1,671 @@
+{
+	"name": "pl_f1_landing_to_bronze",
+	"properties": {
+		"activities": [
+			{
+				"name": "lkp_f1_metadata",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "JsonSource",
+						"storeSettings": {
+							"type": "AzureBlobFSReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "JsonReadSettings"
+						}
+					},
+					"dataset": {
+						"referenceName": "ds_f1_formula_lookup_metadata",
+						"type": "DatasetReference"
+					}
+				}
+			},
+			{
+				"name": "fe_f1_formula_get_meta_data",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "ForEach1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('lkp_f1_metadata').output.firstRow.files",
+						"type": "Expression"
+					},
+					"isSequential": true,
+					"activities": [
+						{
+							"name": "gm_f1_formula_file_metadata",
+							"type": "GetMetadata",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"dataset": {
+									"referenceName": "ds_format_check",
+									"type": "DatasetReference",
+									"parameters": {
+										"container_name": {
+											"value": "@item().container_name",
+											"type": "Expression"
+										},
+										"folder_name": {
+											"value": "@concat(item().folder_name,'/',item().file_name)",
+											"type": "Expression"
+										}
+									}
+								},
+								"fieldList": [
+									"childItems"
+								],
+								"storeSettings": {
+									"type": "AzureBlobFSReadSettings",
+									"recursive": true,
+									"enablePartitionDiscovery": false
+								},
+								"formatSettings": {
+									"type": "BinaryReadSettings"
+								}
+							}
+						},
+						{
+							"name": "if_f1_formula_loading_bronze",
+							"type": "IfCondition",
+							"dependsOn": [
+								{
+									"activity": "If Condition1",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"expression": {
+									"value": "@and(\n    endswith(activity('gm_f1_formula_file_metadata').output.childItems[0].name, '.json'),\n    greater(length(activity('gm_f1_formula_file_metadata').output.childItems), 1)\n)",
+									"type": "Expression"
+								},
+								"ifTrueActivities": [
+									{
+										"name": "cp_json_multiple_files",
+										"type": "Copy",
+										"dependsOn": [],
+										"policy": {
+											"timeout": "0.12:00:00",
+											"retry": 0,
+											"retryIntervalInSeconds": 30,
+											"secureOutput": false,
+											"secureInput": false
+										},
+										"userProperties": [],
+										"typeProperties": {
+											"source": {
+												"type": "JsonSource",
+												"additionalColumns": [
+													{
+														"name": "source_file_name",
+														"value": {
+															"value": "@concat(item().folder_name,'/',item().file_name,'/',item().file_name,'.json')",
+															"type": "Expression"
+														}
+													},
+													{
+														"name": "ingestion_timestamp",
+														"value": {
+															"value": "@utcNow()",
+															"type": "Expression"
+														}
+													}
+												],
+												"storeSettings": {
+													"type": "AzureBlobFSReadSettings",
+													"recursive": true,
+													"wildcardFolderPath": {
+														"value": "@concat(item().folder_name,'/',item().file_name)",
+														"type": "Expression"
+													},
+													"wildcardFileName": "*.json",
+													"enablePartitionDiscovery": false
+												},
+												"formatSettings": {
+													"type": "JsonReadSettings"
+												}
+											},
+											"sink": {
+												"type": "ParquetSink",
+												"storeSettings": {
+													"type": "AzureBlobFSWriteSettings",
+													"copyBehavior": "MergeFiles"
+												},
+												"formatSettings": {
+													"type": "ParquetWriteSettings"
+												}
+											},
+											"enableStaging": false
+										},
+										"inputs": [
+											{
+												"referenceName": "ds_json_multiple",
+												"type": "DatasetReference",
+												"parameters": {
+													"container_name": {
+														"value": "@item().container_name",
+														"type": "Expression"
+													},
+													"folder_name": "@concat(item().folder_name,'/',item().file_name)"
+												}
+											}
+										],
+										"outputs": [
+											{
+												"referenceName": "ds_f1_formula_mlutiple_json_sink",
+												"type": "DatasetReference",
+												"parameters": {
+													"folder_name": {
+														"value": "@concat(item().folder_name,'/',item().file_name)",
+														"type": "Expression"
+													},
+													"file_name": {
+														"value": "@concat(item().file_name,'.parquet')",
+														"type": "Expression"
+													}
+												}
+											}
+										]
+									}
+								]
+							}
+						},
+						{
+							"name": "If_f1_formaula_single_jspn",
+							"type": "IfCondition",
+							"dependsOn": [
+								{
+									"activity": "if_f1_formula_loading_bronze",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"expression": {
+									"value": "@and(\n    endswith(activity('gm_f1_formula_file_metadata').output.childItems[0].name, '.json'),\n    equals(length(activity('gm_f1_formula_file_metadata').output.childItems), 1)\n)",
+									"type": "Expression"
+								},
+								"ifTrueActivities": [
+									{
+										"name": "cp_single_json",
+										"type": "Copy",
+										"dependsOn": [],
+										"policy": {
+											"timeout": "0.12:00:00",
+											"retry": 0,
+											"retryIntervalInSeconds": 30,
+											"secureOutput": false,
+											"secureInput": false
+										},
+										"userProperties": [],
+										"typeProperties": {
+											"source": {
+												"type": "JsonSource",
+												"additionalColumns": [
+													{
+														"name": "source_file_name",
+														"value": {
+															"value": "@concat(item().folder_name,'/',item().file_name,'/',item().file_name,'.csv')",
+															"type": "Expression"
+														}
+													},
+													{
+														"name": "ingestion_timestamp",
+														"value": {
+															"value": "@utcNow()",
+															"type": "Expression"
+														}
+													}
+												],
+												"storeSettings": {
+													"type": "AzureBlobFSReadSettings",
+													"recursive": true,
+													"enablePartitionDiscovery": false
+												},
+												"formatSettings": {
+													"type": "JsonReadSettings"
+												}
+											},
+											"sink": {
+												"type": "JsonSink",
+												"storeSettings": {
+													"type": "AzureBlobFSWriteSettings"
+												},
+												"formatSettings": {
+													"type": "JsonWriteSettings"
+												}
+											},
+											"enableStaging": false
+										},
+										"inputs": [
+											{
+												"referenceName": "ds_f1_formula_single_json_source",
+												"type": "DatasetReference",
+												"parameters": {
+													"container_name": "@item().container_name",
+													"folder_name": "@concat(item().folder_name,'/',item().file_name)",
+													"file_name": {
+														"value": "@concat(item().file_name,'.json')",
+														"type": "Expression"
+													}
+												}
+											}
+										],
+										"outputs": [
+											{
+												"referenceName": "ds_f1_formula_single_json",
+												"type": "DatasetReference",
+												"parameters": {
+													"folder_name": {
+														"value": "@concat(item().folder_name,'/',item().file_name)",
+														"type": "Expression"
+													},
+													"file_name": {
+														"value": "@concat(item().file_name,'.parquet')",
+														"type": "Expression"
+													}
+												}
+											}
+										]
+									}
+								]
+							}
+						},
+						{
+							"name": "If_csv",
+							"type": "IfCondition",
+							"dependsOn": [
+								{
+									"activity": "If_f1_formaula_single_jspn",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"expression": {
+									"value": "@and(\n    endswith(activity('gm_f1_formula_file_metadata').output.childItems[0].name, '.csv'),\n    equals(length(activity('gm_f1_formula_file_metadata').output.childItems), 1)\n)",
+									"type": "Expression"
+								},
+								"ifTrueActivities": [
+									{
+										"name": "cp_csv",
+										"type": "Copy",
+										"dependsOn": [],
+										"policy": {
+											"timeout": "0.12:00:00",
+											"retry": 0,
+											"retryIntervalInSeconds": 30,
+											"secureOutput": false,
+											"secureInput": false
+										},
+										"userProperties": [],
+										"typeProperties": {
+											"source": {
+												"type": "DelimitedTextSource",
+												"additionalColumns": [
+													{
+														"name": "source_file_name",
+														"value": {
+															"value": "@concat(item().folder_name,'/',item().file_name,'/',item().file_name,'.csv')",
+															"type": "Expression"
+														}
+													},
+													{
+														"name": "ingestion_timestamp",
+														"value": {
+															"value": "@utcNow()",
+															"type": "Expression"
+														}
+													}
+												],
+												"storeSettings": {
+													"type": "AzureBlobFSReadSettings",
+													"recursive": true,
+													"enablePartitionDiscovery": false
+												},
+												"formatSettings": {
+													"type": "DelimitedTextReadSettings"
+												}
+											},
+											"sink": {
+												"type": "ParquetSink",
+												"storeSettings": {
+													"type": "AzureBlobFSWriteSettings"
+												},
+												"formatSettings": {
+													"type": "ParquetWriteSettings"
+												}
+											},
+											"enableStaging": false,
+											"translator": {
+												"type": "TabularTranslator",
+												"typeConversion": true,
+												"typeConversionSettings": {
+													"allowDataTruncation": true,
+													"treatBooleanAsNumber": false
+												}
+											}
+										},
+										"inputs": [
+											{
+												"referenceName": "ds_f1_formula_csv_soure",
+												"type": "DatasetReference",
+												"parameters": {
+													"container_name": {
+														"value": "@item().container_name",
+														"type": "Expression"
+													},
+													"folder_name": {
+														"value": "@concat(item().folder_name,'/',item().file_name)",
+														"type": "Expression"
+													},
+													"file_name": {
+														"value": "@concat(item().file_name,'.csv')",
+														"type": "Expression"
+													}
+												}
+											}
+										],
+										"outputs": [
+											{
+												"referenceName": "ds_f1_formula_csv_sink",
+												"type": "DatasetReference",
+												"parameters": {
+													"folder_name": {
+														"value": "@concat(item().folder_name,'/',item().file_name)",
+														"type": "Expression"
+													},
+													"file_name": {
+														"value": "@concat(item().file_name,'.parquet')",
+														"type": "Expression"
+													}
+												}
+											}
+										]
+									}
+								]
+							}
+						},
+						{
+							"name": "nb_schema_validation_check",
+							"type": "DatabricksNotebook",
+							"dependsOn": [
+								{
+									"activity": "gm_f1_formula_file_metadata",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"notebookPath": "/Users/ganeshgadade157@gmail.com/Projects/Fomrula-f1/schema_validation/schema_validation_f1",
+								"baseParameters": {
+									"folder_path": {
+										"value": "@concat('abfss://',item().container_name,'@stdevelopmentgani.dfs.core.windows.net','/',item().folder_name,'/',item().file_name)\n",
+										"type": "Expression"
+									},
+									"file_format": {
+										"value": "@split(activity('gm_f1_formula_file_metadata').output.childItems[0].name,'.')[1]\n",
+										"type": "Expression"
+									},
+									"expected_columns": {
+										"value": "@join(item().columns, ',')",
+										"type": "Expression"
+									},
+									"file_name": {
+										"value": "@activity('gm_f1_formula_file_metadata').output.childItems[0].name",
+										"type": "Expression"
+									}
+								}
+							},
+							"linkedServiceName": {
+								"referenceName": "ls_databricks",
+								"type": "LinkedServiceReference"
+							}
+						},
+						{
+							"name": "If Condition1",
+							"type": "IfCondition",
+							"dependsOn": [
+								{
+									"activity": "nb_schema_validation_check",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"expression": {
+									"value": "@equals(activity('nb_schema_validation_check').output.runOutput.status, 'PASSED')\n",
+									"type": "Expression"
+								},
+								"ifFalseActivities": [
+									{
+										"name": "fail_schema_validation",
+										"type": "Fail",
+										"dependsOn": [],
+										"userProperties": [],
+										"typeProperties": {
+											"message": {
+												"value": "@concat(\n  'Validation failed for file: ',\n  activity('nb_schema_validation_check').output.runOutput.file_name,\n  '. Expected columns: ',\n  string(activity('nb_schema_validation_check').output.runOutput.expected_count),\n  ', Actual columns: ',\n  string(activity('nb_schema_validation_check').output.runOutput.actual_count),\n  ', Missing: ',\n  string(activity('nb_schema_validation_check').output.runOutput.missing),\n  ', Extra: ',\n  string(activity('nb_schema_validation_check').output.runOutput.extra)\n)\n",
+												"type": "Expression"
+											},
+											"errorCode": "SCHEMA_VALIDATION_FAILED"
+										}
+									}
+								]
+							}
+						}
+					]
+				}
+			},
+			{
+				"name": "ForEach1",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "lkp_f1_metadata",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('lkp_f1_metadata').output.firstRow.files",
+						"type": "Expression"
+					},
+					"isSequential": true,
+					"activities": [
+						{
+							"name": "file_exist",
+							"type": "GetMetadata",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"dataset": {
+									"referenceName": "ds_f1_formula_get_metadata_archieve_generic",
+									"type": "DatasetReference",
+									"parameters": {
+										"folder_name": {
+											"value": "@concat(item().folder_name,'/',item().file_name)",
+											"type": "Expression"
+										},
+										"file_name": {
+											"value": "@concat(item().file_name,'.parquet')",
+											"type": "Expression"
+										}
+									}
+								},
+								"fieldList": [
+									"exists"
+								],
+								"storeSettings": {
+									"type": "AzureBlobFSReadSettings",
+									"recursive": true,
+									"enablePartitionDiscovery": false
+								},
+								"formatSettings": {
+									"type": "ParquetReadSettings"
+								}
+							}
+						},
+						{
+							"name": "If_file_exist",
+							"type": "IfCondition",
+							"dependsOn": [
+								{
+									"activity": "file_exist",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"expression": {
+									"value": "@activity('file_exist').output.exists",
+									"type": "Expression"
+								},
+								"ifTrueActivities": [
+									{
+										"name": "cp_archieve",
+										"type": "Copy",
+										"dependsOn": [],
+										"policy": {
+											"timeout": "0.12:00:00",
+											"retry": 0,
+											"retryIntervalInSeconds": 30,
+											"secureOutput": false,
+											"secureInput": false
+										},
+										"userProperties": [],
+										"typeProperties": {
+											"source": {
+												"type": "ParquetSource",
+												"storeSettings": {
+													"type": "AzureBlobFSReadSettings",
+													"recursive": true,
+													"enablePartitionDiscovery": false
+												},
+												"formatSettings": {
+													"type": "ParquetReadSettings"
+												}
+											},
+											"sink": {
+												"type": "ParquetSink",
+												"storeSettings": {
+													"type": "AzureBlobFSWriteSettings"
+												},
+												"formatSettings": {
+													"type": "ParquetWriteSettings"
+												}
+											},
+											"enableStaging": false,
+											"translator": {
+												"type": "TabularTranslator",
+												"typeConversion": true,
+												"typeConversionSettings": {
+													"allowDataTruncation": true,
+													"treatBooleanAsNumber": false
+												}
+											}
+										},
+										"inputs": [
+											{
+												"referenceName": "ds_f1_formula_archieve_soure",
+												"type": "DatasetReference",
+												"parameters": {
+													"folder_name": {
+														"value": "@concat(item().folder_name,'/',item().file_name)",
+														"type": "Expression"
+													},
+													"file_name": {
+														"value": "@concat(item().file_name,'.parquet')",
+														"type": "Expression"
+													}
+												}
+											}
+										],
+										"outputs": [
+											{
+												"referenceName": "ds_f1_formula_archieve_sink",
+												"type": "DatasetReference",
+												"parameters": {
+													"folder_name": {
+														"value": "@concat('archive','/',item().folder_name,'/',formatDateTime(utcNow(),'yyyy'),'/',formatDateTime(utcNow(),'MM'),'/',formatDateTime(utcNow(),'dd'),'/',item().file_name)",
+														"type": "Expression"
+													},
+													"file_name": {
+														"value": "@concat(item().file_name,'.parquet')",
+														"type": "Expression"
+													}
+												}
+											}
+										]
+									}
+								]
+							}
+						}
+					]
+				}
+			}
+		],
+		"folder": {
+			"name": "Projects/Formula1/child"
+		},
+		"annotations": [],
+		"lastPublishTime": "2026-06-30T14:42:26Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

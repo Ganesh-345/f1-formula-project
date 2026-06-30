@@ -1,0 +1,325 @@
+{
+	"name": "p_f1_formula_databricks",
+	"properties": {
+		"activities": [
+			{
+				"name": "nb_Bronze_constructor_flat",
+				"type": "DatabricksNotebook",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"notebookPath": "/Users/ganeshgadade157@gmail.com/Projects/Formula-f1/03.silver/00.Bronze_constructor_flat"
+				},
+				"linkedServiceName": {
+					"referenceName": "ls_databricks",
+					"type": "LinkedServiceReference"
+				}
+			},
+			{
+				"name": "nb_Bronze_driver_flat",
+				"type": "DatabricksNotebook",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"notebookPath": "/Users/ganeshgadade157@gmail.com/Projects/Formula-f1/03.silver/00.Bronze_driver_flat"
+				},
+				"linkedServiceName": {
+					"referenceName": "ls_databricks",
+					"type": "LinkedServiceReference"
+				}
+			},
+			{
+				"name": "nb_silver_Transform_Constructors_Data",
+				"type": "DatabricksNotebook",
+				"dependsOn": [
+					{
+						"activity": "nb_Bronze_constructor_flat",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"notebookPath": "/Users/ganeshgadade157@gmail.com/Projects/Formula-f1/03.silver/03.Transform_Constructors_Data"
+				},
+				"linkedServiceName": {
+					"referenceName": "ls_databricks",
+					"type": "LinkedServiceReference"
+				}
+			},
+			{
+				"name": "nb_silver_Transform_Drivers_data",
+				"type": "DatabricksNotebook",
+				"dependsOn": [
+					{
+						"activity": "nb_Bronze_driver_flat",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"notebookPath": "/Users/ganeshgadade157@gmail.com/Projects/Formula-f1/03.silver/04.Transform_Drivers_data"
+				},
+				"linkedServiceName": {
+					"referenceName": "ls_databricks",
+					"type": "LinkedServiceReference"
+				}
+			},
+			{
+				"name": "nb_silver_Transform_Circuit_data",
+				"type": "DatabricksNotebook",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"notebookPath": "/Users/ganeshgadade157@gmail.com/Projects/Formula-f1/03.silver/01.Transform_Circuit_data"
+				},
+				"linkedServiceName": {
+					"referenceName": "ls_databricks",
+					"type": "LinkedServiceReference"
+				}
+			},
+			{
+				"name": "nb_silver_Transform_Races_Data",
+				"type": "DatabricksNotebook",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"notebookPath": "/Users/ganeshgadade157@gmail.com/Projects/Formula-f1/03.silver/02.Transform_Races_Data"
+				},
+				"linkedServiceName": {
+					"referenceName": "ls_databricks",
+					"type": "LinkedServiceReference"
+				}
+			},
+			{
+				"name": "nb_silver_Transform_Results_data",
+				"type": "DatabricksNotebook",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"notebookPath": "/Users/ganeshgadade157@gmail.com/Projects/Formula-f1/03.silver/05.Transform_Results_data"
+				},
+				"linkedServiceName": {
+					"referenceName": "ls_databricks",
+					"type": "LinkedServiceReference"
+				}
+			},
+			{
+				"name": "nb_silver_Transform_Sprints_Data",
+				"type": "DatabricksNotebook",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"notebookPath": "/Users/ganeshgadade157@gmail.com/Projects/Formula-f1/03.silver/06.Transform_Sprints_Data"
+				},
+				"linkedServiceName": {
+					"referenceName": "ls_databricks",
+					"type": "LinkedServiceReference"
+				}
+			},
+			{
+				"name": "nb_gold_Dim_constructors",
+				"type": "DatabricksNotebook",
+				"dependsOn": [
+					{
+						"activity": "nb_silver_Transform_Constructors_Data",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"notebookPath": "/Users/ganeshgadade157@gmail.com/Projects/Formula-f1/04.Gold/01.Dim_constructors"
+				},
+				"linkedServiceName": {
+					"referenceName": "ls_databricks",
+					"type": "LinkedServiceReference"
+				}
+			},
+			{
+				"name": "nb_gold_Dim_races",
+				"type": "DatabricksNotebook",
+				"dependsOn": [
+					{
+						"activity": "nb_silver_Transform_Races_Data",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"notebookPath": "/Users/ganeshgadade157@gmail.com/Projects/Formula-f1/04.Gold/02.Dim_races"
+				},
+				"linkedServiceName": {
+					"referenceName": "ls_databricks",
+					"type": "LinkedServiceReference"
+				}
+			},
+			{
+				"name": "nb_gold_fact_session_results",
+				"type": "DatabricksNotebook",
+				"dependsOn": [
+					{
+						"activity": "nb_gold_Dim_drivers",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "nb_gold_Dim_races",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "nb_gold_Dim_constructors",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "nb_silver_Transform_Results_data",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "nb_silver_Transform_Sprints_Data",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"notebookPath": "/Users/ganeshgadade157@gmail.com/Projects/Formula-f1/04.Gold/04.fact_session_results"
+				},
+				"linkedServiceName": {
+					"referenceName": "ls_databricks",
+					"type": "LinkedServiceReference"
+				}
+			},
+			{
+				"name": "nb_gold_Dim_drivers",
+				"type": "DatabricksNotebook",
+				"dependsOn": [
+					{
+						"activity": "nb_silver_Transform_Drivers_data",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "nb_silver_Transform_Circuit_data",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"notebookPath": "/Users/ganeshgadade157@gmail.com/Projects/Formula-f1/04.Gold/03.Dim_drivers"
+				},
+				"linkedServiceName": {
+					"referenceName": "ls_databricks",
+					"type": "LinkedServiceReference"
+				}
+			}
+		],
+		"folder": {
+			"name": "Projects/Formula1/child"
+		},
+		"annotations": [],
+		"lastPublishTime": "2026-06-30T14:42:26Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

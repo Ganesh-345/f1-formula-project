@@ -1,0 +1,29 @@
+{
+	"name": "exe_databricks_notebook",
+	"properties": {
+		"activities": [
+			{
+				"name": "exe_databricks",
+				"type": "ExecutePipeline",
+				"dependsOn": [],
+				"policy": {
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "p_databricks",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			}
+		],
+		"folder": {
+			"name": "Projects/Health care revenue cycle management/downstream_pipeline"
+		},
+		"annotations": [],
+		"lastPublishTime": "2026-06-25T14:24:50Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

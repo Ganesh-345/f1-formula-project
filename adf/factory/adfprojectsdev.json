@@ -1,0 +1,15 @@
+{
+	"name": "adfprojectsdev",
+	"properties": {
+		"trustModeClaimForMi": {
+			"value": "Disabled",
+			"editable": true
+		}
+	},
+	"location": "southindia",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "4ec7cb9c-97a3-440d-8f8c-67449d95e3d4",
+		"tenantId": "11453208-5d56-4668-be9c-f923407a4a16"
+	}
+}

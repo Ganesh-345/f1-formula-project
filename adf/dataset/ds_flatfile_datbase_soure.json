@@ -1,0 +1,48 @@
+{
+	"name": "ds_flatfile_datbase_soure",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_stdevelopmentgani",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Project/Health care revenue management/Source and target"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "hospital_meta_data.txt",
+				"fileSystem": "landing"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "container_name",
+				"type": "String"
+			},
+			{
+				"name": "folde_name",
+				"type": "String"
+			},
+			{
+				"name": "file_name",
+				"type": "String"
+			},
+			{
+				"name": "target_container",
+				"type": "String"
+			},
+			{
+				"name": "table_name",
+				"type": "String"
+			}
+		]
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

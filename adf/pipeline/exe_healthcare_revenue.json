@@ -1,0 +1,151 @@
+{
+	"name": "exe_healthcare_revenue",
+	"properties": {
+		"activities": [
+			{
+				"name": "Exe_load_to_bronze",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "wa_Send_Start_Email",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "p_sql_to_bronze",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "exe_databricks_notebook",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "Exe_load_to_bronze",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "exe_databricks_notebook",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "wa_Send_Start_Email",
+				"type": "WebActivity",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"method": "POST",
+					"headers": {
+						"Content-Type": "application/json"
+					},
+					"url": "https://prod-22.centralindia.logic.azure.com:443/workflows/28372c28aa28471695288bb622df7282/triggers/When_an_HTTP_request_is_received/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2FWhen_an_HTTP_request_is_received%2Frun&sv=1.0&sig=z02qR6yHRW3KD6_JQRXMSti3KTdColiBHtujkagzTGI",
+					"body": {
+						"value": "{\n    \"PipelineName\":\"@{pipeline().Pipeline}\",\n    \"Status\":\"Started\",\n    \"RunId\":\"@{pipeline().RunId}\"\n}",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "wa_success",
+				"type": "WebActivity",
+				"dependsOn": [
+					{
+						"activity": "exe_databricks_notebook",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"method": "POST",
+					"headers": {
+						"Content-Type": "application/json"
+					},
+					"url": "https://prod-22.centralindia.logic.azure.com:443/workflows/28372c28aa28471695288bb622df7282/triggers/When_an_HTTP_request_is_received/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2FWhen_an_HTTP_request_is_received%2Frun&sv=1.0&sig=z02qR6yHRW3KD6_JQRXMSti3KTdColiBHtujkagzTGI",
+					"body": {
+						"value": "{\n    \"PipelineName\":\"@{pipeline().Pipeline}\",\n    \"Status\":\"Success\",\n    \"RunId\":\"@{pipeline().RunId}\"\n}",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "wa_failure",
+				"type": "WebActivity",
+				"dependsOn": [
+					{
+						"activity": "Exe_load_to_bronze",
+						"dependencyConditions": [
+							"Failed"
+						]
+					},
+					{
+						"activity": "exe_databricks_notebook",
+						"dependencyConditions": [
+							"Failed"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"method": "POST",
+					"headers": {
+						"Content-Type": "application/json"
+					},
+					"url": "https://prod-22.centralindia.logic.azure.com:443/workflows/28372c28aa28471695288bb622df7282/triggers/When_an_HTTP_request_is_received/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2FWhen_an_HTTP_request_is_received%2Frun&sv=1.0&sig=z02qR6yHRW3KD6_JQRXMSti3KTdColiBHtujkagzTGI",
+					"body": {
+						"value": "{\n    \"PipelineName\":\"@{pipeline().Pipeline}\",\n    \"Status\":\"Failed\",\n    \"RunId\":\"@{pipeline().RunId}\"\n}",
+						"type": "Expression"
+					}
+				}
+			}
+		],
+		"folder": {
+			"name": "Projects/Health care revenue cycle management/Main_pipeline"
+		},
+		"annotations": [],
+		"lastPublishTime": "2026-06-25T14:24:50Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

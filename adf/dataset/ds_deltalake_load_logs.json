@@ -1,0 +1,45 @@
+{
+	"name": "ds_deltalake_load_logs",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_AzureDatabricksDeltaLake",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Project/Health care revenue management/Source and target"
+		},
+		"annotations": [],
+		"type": "AzureDatabricksDeltaLakeDataset",
+		"typeProperties": {
+			"database": "myorganisation_dev_audit",
+			"table": "load_logs"
+		},
+		"schema": [
+			{
+				"name": "id",
+				"type": "long"
+			},
+			{
+				"name": "data_source",
+				"type": "string"
+			},
+			{
+				"name": "tablename",
+				"type": "string"
+			},
+			{
+				"name": "numberofrowscopied",
+				"type": "integer"
+			},
+			{
+				"name": "watermarkcolumnname",
+				"type": "string"
+			},
+			{
+				"name": "loaddate",
+				"type": "timestamp"
+			}
+		]
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

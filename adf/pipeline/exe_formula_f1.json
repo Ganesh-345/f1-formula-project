@@ -1,0 +1,52 @@
+{
+	"name": "exe_formula_f1",
+	"properties": {
+		"activities": [
+			{
+				"name": "exe_f1_landing_bronze",
+				"type": "ExecutePipeline",
+				"dependsOn": [],
+				"policy": {
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "pl_f1_landing_to_bronze",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "exe_f1_databricks",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "exe_f1_landing_bronze",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "p_f1_formula_databricks",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			}
+		],
+		"folder": {
+			"name": "Projects/Formula1"
+		},
+		"annotations": [],
+		"lastPublishTime": "2026-06-30T14:41:44Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

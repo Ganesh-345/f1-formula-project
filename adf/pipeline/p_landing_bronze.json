@@ -1,0 +1,149 @@
+{
+	"name": "p_landing_bronze",
+	"properties": {
+		"activities": [
+			{
+				"name": "lkp_landing_view",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "DelimitedTextSource",
+						"storeSettings": {
+							"type": "AzureBlobFSReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "DelimitedTextReadSettings"
+						}
+					},
+					"dataset": {
+						"referenceName": "ds_land_bronze_claim",
+						"type": "DatasetReference"
+					},
+					"firstRowOnly": false
+				}
+			},
+			{
+				"name": "fe_claim",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "lkp_landing_view",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('lkp_landing_view').output.value",
+						"type": "Expression"
+					},
+					"activities": [
+						{
+							"name": "cp_claim_data_copy",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "DelimitedTextSource",
+									"storeSettings": {
+										"type": "AzureBlobFSReadSettings",
+										"recursive": true,
+										"enablePartitionDiscovery": false
+									},
+									"formatSettings": {
+										"type": "DelimitedTextReadSettings"
+									}
+								},
+								"sink": {
+									"type": "ParquetSink",
+									"storeSettings": {
+										"type": "AzureBlobFSWriteSettings"
+									},
+									"formatSettings": {
+										"type": "ParquetWriteSettings"
+									}
+								},
+								"enableStaging": false,
+								"translator": {
+									"type": "TabularTranslator",
+									"typeConversion": true,
+									"typeConversionSettings": {
+										"allowDataTruncation": true,
+										"treatBooleanAsNumber": false
+									}
+								}
+							},
+							"inputs": [
+								{
+									"referenceName": "ds_claim_data",
+									"type": "DatasetReference",
+									"parameters": {
+										"containername": {
+											"value": "@item().container_name",
+											"type": "Expression"
+										},
+										"foldername": {
+											"value": "@item().folde_name",
+											"type": "Expression"
+										},
+										"filename": {
+											"value": "@item().file_name",
+											"type": "Expression"
+										}
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "ds_claim_target_parquet",
+									"type": "DatasetReference",
+									"parameters": {
+										"containername": {
+											"value": "@item().target_container",
+											"type": "Expression"
+										},
+										"foldername": {
+											"value": "@item().folde_name",
+											"type": "Expression"
+										},
+										"filename": {
+											"value": "@concat(split(item().file_name,'.')[0],'.parquet')",
+											"type": "Expression"
+										}
+									}
+								}
+							]
+						}
+					]
+				}
+			}
+		],
+		"folder": {
+			"name": "Projects/Health care revenue cycle management/copy_data"
+		},
+		"annotations": [],
+		"lastPublishTime": "2026-05-22T07:45:17Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

@@ -1,0 +1,23 @@
+{
+	"name": "ds_load_logs",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureSqlDatabase1",
+			"type": "LinkedServiceReference",
+			"parameters": {
+				"database": "db_dev_data"
+			}
+		},
+		"folder": {
+			"name": "Project/Health care revenue management/Source and target"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "load_logs"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

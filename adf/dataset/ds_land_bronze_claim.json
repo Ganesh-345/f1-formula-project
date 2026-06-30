@@ -1,0 +1,100 @@
+{
+	"name": "ds_land_bronze_claim",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_stdevelopmentgani",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Project/Health care revenue management/Source and target"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "landig_folder_name.txt",
+				"fileSystem": "landing"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "ClaimID",
+				"type": "String"
+			},
+			{
+				"name": "TransactionID",
+				"type": "String"
+			},
+			{
+				"name": "PatientID",
+				"type": "String"
+			},
+			{
+				"name": "EncounterID",
+				"type": "String"
+			},
+			{
+				"name": "ProviderID",
+				"type": "String"
+			},
+			{
+				"name": "DeptID",
+				"type": "String"
+			},
+			{
+				"name": "ServiceDate",
+				"type": "String"
+			},
+			{
+				"name": "ClaimDate",
+				"type": "String"
+			},
+			{
+				"name": "PayorID",
+				"type": "String"
+			},
+			{
+				"name": "ClaimAmount",
+				"type": "String"
+			},
+			{
+				"name": "PaidAmount",
+				"type": "String"
+			},
+			{
+				"name": "ClaimStatus",
+				"type": "String"
+			},
+			{
+				"name": "PayorType",
+				"type": "String"
+			},
+			{
+				"name": "Deductible",
+				"type": "String"
+			},
+			{
+				"name": "Coinsurance",
+				"type": "String"
+			},
+			{
+				"name": "Copay",
+				"type": "String"
+			},
+			{
+				"name": "InsertDate",
+				"type": "String"
+			},
+			{
+				"name": "ModifiedDate",
+				"type": "String"
+			}
+		]
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

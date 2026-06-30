@@ -1,0 +1,50 @@
+{
+	"name": "ds_f1_formula_lookup_metadata",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_stdevelopmentgani",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Project/Formula1/generic"
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "schema_validation_f1_formula.json",
+				"fileSystem": "config"
+			}
+		},
+		"schema": {
+			"type": "object",
+			"properties": {
+				"files": {
+					"type": "array",
+					"items": {
+						"type": "object",
+						"properties": {
+							"container_name": {
+								"type": "string"
+							},
+							"folder_name": {
+								"type": "string"
+							},
+							"file_name": {
+								"type": "string"
+							},
+							"columns": {
+								"type": "array",
+								"items": {
+									"type": "string"
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}
