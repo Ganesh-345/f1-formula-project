@@ -65,7 +65,7 @@
 							"userProperties": [],
 							"typeProperties": {
 								"dataset": {
-									"referenceName": "ds_format_check",
+									"referenceName": "ds_format1_check",
 									"type": "DatasetReference",
 									"parameters": {
 										"container_name": {
