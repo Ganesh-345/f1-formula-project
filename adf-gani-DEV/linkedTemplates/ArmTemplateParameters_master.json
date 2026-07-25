@@ -1,0 +1,57 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "adf-gani-DEV"
+		},
+		"AzureSqlDatabase1_password": {
+			"value": ""
+		},
+		"Github_credential": {
+			"value": ""
+		},
+		"ls_AzureDatabricksDeltaLake_accessToken": {
+			"value": ""
+		},
+		"ls_stdevdatalake_AzureBlob_Storage_connectionString": {
+			"value": ""
+		},
+		"ls_stdevelopmentgani_accountKey": {
+			"value": ""
+		},
+		"AzureKeyVault1_properties_typeProperties_baseUrl": {
+			"value": "https://kv-dev-gani.vault.azure.net/"
+		},
+		"AzureSqlDatabase1_properties_typeProperties_server": {
+			"value": "rcm-sql-server-southindia.database.windows.net"
+		},
+		"AzureSqlDatabase1_properties_typeProperties_database": {
+			"value": "@{linkedService().database}"
+		},
+		"AzureSqlDatabase1_properties_typeProperties_userName": {
+			"value": "gani"
+		},
+		"Github_properties_typeProperties_username": {
+			"value": "Ganesh-345"
+		},
+		"ls_databricks_properties_typeProperties_existingClusterId": {
+			"value": "0622-051918-zggitmea"
+		},
+		"ls_github_properties_typeProperties_username": {
+			"value": "Ganesh-345"
+		},
+		"ls_keyvault_properties_typeProperties_baseUrl": {
+			"value": "https://kv-gani-passwords.vault.azure.net/"
+		},
+		"ls_stdevelopmentgani_properties_typeProperties_url": {
+			"value": "https://stdevelopment.dfs.core.windows.net/"
+		},
+		"containerUri": {
+			"value": ""
+		},
+		"containerSasToken": {
+			"value": ""
+		}
+	}
+}
