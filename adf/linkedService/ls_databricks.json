@@ -1,21 +1,21 @@
 {
 	"name": "ls_databricks",
-	"type": "Microsoft.DataFactory/factories/linkedservices",
 	"properties": {
 		"annotations": [],
 		"type": "AzureDatabricks",
 		"typeProperties": {
-			"domain": "https://adb-7405618688009253.13.azuredatabricks.net",
+			"domain": "https://adb-7405614085831176.16.azuredatabricks.net",
 			"accessToken": {
 				"type": "AzureKeyVaultSecret",
 				"store": {
-					"referenceName": "AzureKeyVault1",
+					"referenceName": "ls_keyvault",
 					"type": "LinkedServiceReference"
 				},
-				"secretName": "databricks-access-connector",
-				"secretVersion": "112c54e2fc7c495e9bc64fda7013adf7"
+				"secretName": "adf-access-token",
+				"secretVersion": "e1ac80bf40b3479aaabcd78595b87296"
 			},
-			"existingClusterId": "0622-051918-zggitmea"
+			"existingClusterId": "0725-063535-brgtwfq3"
 		}
-	}
+	},
+	"type": "Microsoft.DataFactory/factories/linkedservices"
 }
