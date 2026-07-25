@@ -14,7 +14,7 @@
 			"location": {
 				"type": "AzureBlobFSLocation",
 				"fileName": "schema_validation_f1_formula.json",
-				"folderPath": "config",
+				"folderPath": "formula1fullloadlanding/config",
 				"fileSystem": "landing"
 			}
 		},

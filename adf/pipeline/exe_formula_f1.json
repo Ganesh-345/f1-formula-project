@@ -21,6 +21,8 @@
 			{
 				"name": "exe_f1_databricks",
 				"type": "ExecutePipeline",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "exe_f1_landing_bronze",
