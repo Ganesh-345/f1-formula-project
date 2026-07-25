@@ -15,7 +15,7 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"notebookPath": "/Users/ganeshgadade157@gmail.com/Projects/Formula-f1/03.silver/00.Bronze_constructor_flat"
+					"notebookPath": "/Users/ganesh.gadade23@outlook.com/f1-formula-project/databricks/Formula-f1/03.silver/00.Bronze_constructor_flat"
 				},
 				"linkedServiceName": {
 					"referenceName": "ls_databricks",
@@ -35,7 +35,7 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"notebookPath": "/Users/ganeshgadade157@gmail.com/Projects/Formula-f1/03.silver/00.Bronze_driver_flat"
+					"notebookPath": "/Users/ganesh.gadade23@outlook.com/f1-formula-project/databricks/Formula-f1/03.silver/00.Bronze_driver_flat"
 				},
 				"linkedServiceName": {
 					"referenceName": "ls_databricks",
@@ -62,7 +62,7 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"notebookPath": "/Users/ganeshgadade157@gmail.com/Projects/Formula-f1/03.silver/03.Transform_Constructors_Data"
+					"notebookPath": "/Users/ganesh.gadade23@outlook.com/f1-formula-project/databricks/Formula-f1/03.silver/01.Transform_Circuit_data"
 				},
 				"linkedServiceName": {
 					"referenceName": "ls_databricks",
@@ -89,7 +89,7 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"notebookPath": "/Users/ganeshgadade157@gmail.com/Projects/Formula-f1/03.silver/04.Transform_Drivers_data"
+					"notebookPath": "/Users/ganesh.gadade23@outlook.com/f1-formula-project/databricks/Formula-f1/03.silver/04.Transform_Drivers_data"
 				},
 				"linkedServiceName": {
 					"referenceName": "ls_databricks",
@@ -109,7 +109,7 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"notebookPath": "/Users/ganeshgadade157@gmail.com/Projects/Formula-f1/03.silver/01.Transform_Circuit_data"
+					"notebookPath": "/Users/ganesh.gadade23@outlook.com/f1-formula-project/databricks/Formula-f1/03.silver/01.Transform_Circuit_data"
 				},
 				"linkedServiceName": {
 					"referenceName": "ls_databricks",
@@ -129,7 +129,7 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"notebookPath": "/Users/ganeshgadade157@gmail.com/Projects/Formula-f1/03.silver/02.Transform_Races_Data"
+					"notebookPath": "/Users/ganesh.gadade23@outlook.com/f1-formula-project/databricks/Formula-f1/03.silver/02.Transform_Races_Data"
 				},
 				"linkedServiceName": {
 					"referenceName": "ls_databricks",
@@ -149,7 +149,7 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"notebookPath": "/Users/ganeshgadade157@gmail.com/Projects/Formula-f1/03.silver/05.Transform_Results_data"
+					"notebookPath": "/Users/ganesh.gadade23@outlook.com/f1-formula-project/databricks/Formula-f1/03.silver/05.Transform_Results_data"
 				},
 				"linkedServiceName": {
 					"referenceName": "ls_databricks",
@@ -169,7 +169,7 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"notebookPath": "/Users/ganeshgadade157@gmail.com/Projects/Formula-f1/03.silver/06.Transform_Sprints_Data"
+					"notebookPath": "/Users/ganesh.gadade23@outlook.com/f1-formula-project/databricks/Formula-f1/03.silver/06.Transform_Sprints_Data"
 				},
 				"linkedServiceName": {
 					"referenceName": "ls_databricks",
@@ -196,7 +196,7 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"notebookPath": "/Users/ganeshgadade157@gmail.com/Projects/Formula-f1/04.Gold/01.Dim_constructors"
+					"notebookPath": "/Users/ganesh.gadade23@outlook.com/f1-formula-project/databricks/Formula-f1/04.Gold/01.Dim_constructors"
 				},
 				"linkedServiceName": {
 					"referenceName": "ls_databricks",
@@ -223,7 +223,7 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"notebookPath": "/Users/ganeshgadade157@gmail.com/Projects/Formula-f1/04.Gold/02.Dim_races"
+					"notebookPath": "/Users/ganesh.gadade23@outlook.com/f1-formula-project/databricks/Formula-f1/04.Gold/03.Dim_drivers"
 				},
 				"linkedServiceName": {
 					"referenceName": "ls_databricks",
@@ -274,7 +274,7 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"notebookPath": "/Users/ganeshgadade157@gmail.com/Projects/Formula-f1/04.Gold/04.fact_session_results"
+					"notebookPath": "/Users/ganesh.gadade23@outlook.com/f1-formula-project/databricks/Formula-f1/04.Gold/04.fact_session_results"
 				},
 				"linkedServiceName": {
 					"referenceName": "ls_databricks",
@@ -307,7 +307,7 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"notebookPath": "/Users/ganeshgadade157@gmail.com/Projects/Formula-f1/04.Gold/03.Dim_drivers"
+					"notebookPath": "/Users/ganesh.gadade23@outlook.com/f1-formula-project/databricks/Formula-f1/04.Gold/03.Dim_drivers"
 				},
 				"linkedServiceName": {
 					"referenceName": "ls_databricks",
