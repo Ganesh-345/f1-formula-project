@@ -439,7 +439,7 @@
 							},
 							"userProperties": [],
 							"typeProperties": {
-								"notebookPath": "/Users/ganeshgadade157@gmail.com/Projects/Fomrula-f1/schema_validation/schema_validation_f1",
+								"notebookPath": "/Users/ganesh.gadade23@outlook.com/f1-formula-project/databricks/Formula-f1/01.schema_validation/schema_validation_f1",
 								"baseParameters": {
 									"folder_path": {
 										"value": "@concat('abfss://',item().container_name,'@stdevelopmentgani.dfs.core.windows.net','/',item().folder_name,'/',item().file_name)\n",
