@@ -49,7 +49,7 @@
 		},
 		"ls_databricks_properties_typeProperties_existingClusterId": {
 			"type": "string",
-			"defaultValue": "0622-051918-zggitmea"
+			"defaultValue": "0725-063535-brgtwfq3"
 		},
 		"ls_github_properties_typeProperties_username": {
 			"type": "string",
