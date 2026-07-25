@@ -1,0 +1,15 @@
+{
+	"name": "adf-gani-DEV",
+	"properties": {
+		"trustModeClaimForMi": {
+			"value": "Disabled",
+			"editable": true
+		}
+	},
+	"location": "southindia",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "29d9bd59-15d1-4704-bab9-a71c4210c2a4",
+		"tenantId": "58efdc34-20f5-47f7-b580-942c48a59b8f"
+	}
+}
