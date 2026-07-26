@@ -1,5 +1,6 @@
 {
 	"name": "ls_AzureDatabricksDeltaLake",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
 	"properties": {
 		"annotations": [],
 		"type": "AzureDatabricksDeltaLake",
@@ -16,6 +17,5 @@
 				"secretVersion": "e1ac80bf40b3479aaabcd78595b87296"
 			}
 		}
-	},
-	"type": "Microsoft.DataFactory/factories/linkedservices"
+	}
 }
