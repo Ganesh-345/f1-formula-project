@@ -1,6 +1,5 @@
 {
 	"name": "ls_github",
-	"type": "Microsoft.DataFactory/factories/linkedservices",
 	"properties": {
 		"annotations": [],
 		"type": "GitHub",
@@ -16,5 +15,6 @@
 				"secretVersion": "1b1694f6fa3b42159578b7a52f7d60d7"
 			}
 		}
-	}
+	},
+	"type": "Microsoft.DataFactory/factories/linkedservices"
 }
