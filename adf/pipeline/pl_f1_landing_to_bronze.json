@@ -515,7 +515,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
-						"value": "@activity('lkp_f1_metadata').output.firstRow.files",
+						"value": "@activity('lkp_f1_metadata').output.firstRow",
 						"type": "Expression"
 					},
 					"isSequential": true,
