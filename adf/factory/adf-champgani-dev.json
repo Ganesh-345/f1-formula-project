@@ -1,0 +1,16 @@
+{
+	"name": "adf-champgani-dev",
+	"properties": {
+		"trustModeClaimForMi": {
+			"value": "Disabled",
+			"editable": true,
+			"isExplicitlySet": false
+		}
+	},
+	"location": "southindia",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "d32f36b4-f5bb-4965-9fa8-b20edbc288c4",
+		"tenantId": "58efdc34-20f5-47f7-b580-942c48a59b8f"
+	}
+}
