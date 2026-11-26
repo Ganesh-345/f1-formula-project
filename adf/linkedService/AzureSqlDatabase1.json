@@ -23,7 +23,7 @@
 					"type": "LinkedServiceReference"
 				},
 				"secretName": "sql-password",
-				"secretVersion": "41f0578c094d4fccacaae46e262f0a67"
+				"secretVersion": "cbb566fda4d149afb99529cf48b00e6b"
 			}
 		}
 	},
