@@ -13,6 +13,83 @@
 	},
 	"resources": [
 		{
+			"name": "[concat(parameters('factoryName'), '/ds_db_sql')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureSqlDatabase1",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"table_name": {
+						"type": "string"
+					}
+				},
+				"folder": {
+					"name": "Project/Health care revenue management/Source and target"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": {
+						"value": "@dataset().table_name",
+						"type": "Expression"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ds_deltalake_load_logs')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ls_AzureDatabricksDeltaLake",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Project/Health care revenue management/Source and target"
+				},
+				"annotations": [],
+				"type": "AzureDatabricksDeltaLakeDataset",
+				"typeProperties": {
+					"database": "myorganisation_dev_audit",
+					"table": "load_logs"
+				},
+				"schema": [
+					{
+						"name": "id",
+						"type": "long"
+					},
+					{
+						"name": "data_source",
+						"type": "string"
+					},
+					{
+						"name": "tablename",
+						"type": "string"
+					},
+					{
+						"name": "numberofrowscopied",
+						"type": "integer"
+					},
+					{
+						"name": "watermarkcolumnname",
+						"type": "string"
+					},
+					{
+						"name": "loaddate",
+						"type": "timestamp"
+					}
+				]
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/ds_flatfile_to_database_sink')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",

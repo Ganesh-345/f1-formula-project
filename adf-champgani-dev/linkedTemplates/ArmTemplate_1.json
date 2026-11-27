@@ -317,7 +317,81 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/ds_format_check3')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ls_stdevelopmentgani",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"container_name": {
+						"type": "string"
+					},
+					"folder_name": {
+						"type": "string"
+					}
+				},
+				"annotations": [],
+				"type": "Binary",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"folderPath": {
+							"value": "@dataset().folder_name",
+							"type": "Expression"
+						},
+						"fileSystem": {
+							"value": "@dataset().container_name",
+							"type": "Expression"
+						}
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/ds_json_multiple')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ls_stdevelopmentgani",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"container_name": {
+						"type": "string"
+					},
+					"folder_name": {
+						"type": "string"
+					}
+				},
+				"folder": {
+					"name": "Project/Formula1/source"
+				},
+				"annotations": [],
+				"type": "Json",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"folderPath": {
+							"value": "@dataset().folder_name",
+							"type": "Expression"
+						},
+						"fileSystem": {
+							"value": "@dataset().container_name",
+							"type": "Expression"
+						}
+					}
+				},
+				"schema": {}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ds_json_multiple1')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -1659,11 +1733,11 @@
 									"userProperties": [],
 									"typeProperties": {
 										"dataset": {
-											"referenceName": "ds_format1_check",
+											"referenceName": "ds_format_check3",
 											"type": "DatasetReference",
 											"parameters": {
 												"container_name": {
-													"value": "@item().container_name",
+													"value": "@item().container",
 													"type": "Expression"
 												},
 												"folder_name": {
@@ -1762,14 +1836,14 @@
 												},
 												"inputs": [
 													{
-														"referenceName": "ds_json_multiple",
+														"referenceName": "ds_json_multiple1",
 														"type": "DatasetReference",
 														"parameters": {
-															"container_name": {
-																"value": "@item().container_name",
+															"container_name": "@item().container_name",
+															"folder_name": {
+																"value": "@concat(item().folder_name,'/',item().file_name)",
 																"type": "Expression"
-															},
-															"folder_name": "@concat(item().folder_name,'/',item().file_name)"
+															}
 														}
 													}
 												],
@@ -2016,6 +2090,8 @@
 								{
 									"name": "nb_schema_validation_check",
 									"type": "DatabricksNotebook",
+									"state": "Inactive",
+									"onInactiveMarkAs": "Succeeded",
 									"dependsOn": [
 										{
 											"activity": "gm_f1_formula_file_metadata",
@@ -2061,6 +2137,8 @@
 								{
 									"name": "If Condition1",
 									"type": "IfCondition",
+									"state": "Inactive",
+									"onInactiveMarkAs": "Succeeded",
 									"dependsOn": [
 										{
 											"activity": "nb_schema_validation_check",
@@ -2091,6 +2169,46 @@
 											}
 										]
 									}
+								},
+								{
+									"name": "gm_f1_formula_file_metadata_copy1",
+									"type": "GetMetadata",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"dataset": {
+											"referenceName": "ds_format_check3",
+											"type": "DatasetReference",
+											"parameters": {
+												"container_name": {
+													"value": "@item().container",
+													"type": "Expression"
+												},
+												"folder_name": {
+													"value": "@concat(item().folder_name,'/',item().file_name)",
+													"type": "Expression"
+												}
+											}
+										},
+										"fieldList": [
+											"childItems"
+										],
+										"storeSettings": {
+											"type": "AzureBlobFSReadSettings",
+											"recursive": true,
+											"enablePartitionDiscovery": false
+										},
+										"formatSettings": {
+											"type": "BinaryReadSettings"
+										}
+									}
 								}
 							]
 						}
@@ -2109,7 +2227,7 @@
 						"userProperties": [],
 						"typeProperties": {
 							"items": {
-								"value": "@activity('lkp_f1_metadata').output.firstRow.files",
+								"value": "@activity('lkp_f1_metadata').output.firstRow",
 								"type": "Expression"
 							},
 							"isSequential": true,
@@ -2265,9 +2383,9 @@
 				"lastPublishTime": "2026-06-30T14:42:26Z"
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/ds_format1_check')]",
+				"[concat(variables('factoryId'), '/datasets/ds_format_check3')]",
 				"[concat(variables('factoryId'), '/linkedServices/ls_databricks')]",
-				"[concat(variables('factoryId'), '/datasets/ds_json_multiple')]"
+				"[concat(variables('factoryId'), '/datasets/ds_json_multiple1')]"
 			]
 		},
 		{
@@ -2286,87 +2404,6 @@
 				"type": "AzureDatabricksDeltaLakeDataset",
 				"typeProperties": {},
 				"schema": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/ls_AzureDatabricksDeltaLake')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/ds_db_sql')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "AzureSqlDatabase1",
-					"type": "LinkedServiceReference"
-				},
-				"parameters": {
-					"table_name": {
-						"type": "string"
-					}
-				},
-				"folder": {
-					"name": "Project/Health care revenue management/Source and target"
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [],
-				"typeProperties": {
-					"schema": "dbo",
-					"table": {
-						"value": "@dataset().table_name",
-						"type": "Expression"
-					}
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/AzureSqlDatabase1')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/ds_deltalake_load_logs')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "ls_AzureDatabricksDeltaLake",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "Project/Health care revenue management/Source and target"
-				},
-				"annotations": [],
-				"type": "AzureDatabricksDeltaLakeDataset",
-				"typeProperties": {
-					"database": "myorganisation_dev_audit",
-					"table": "load_logs"
-				},
-				"schema": [
-					{
-						"name": "id",
-						"type": "long"
-					},
-					{
-						"name": "data_source",
-						"type": "string"
-					},
-					{
-						"name": "tablename",
-						"type": "string"
-					},
-					{
-						"name": "numberofrowscopied",
-						"type": "integer"
-					},
-					{
-						"name": "watermarkcolumnname",
-						"type": "string"
-					},
-					{
-						"name": "loaddate",
-						"type": "timestamp"
-					}
-				]
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/ls_AzureDatabricksDeltaLake')]"
