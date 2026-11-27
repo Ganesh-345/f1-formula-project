@@ -65,15 +65,15 @@
 							"userProperties": [],
 							"typeProperties": {
 								"dataset": {
-									"referenceName": "ds_format1_check",
+									"referenceName": "ds_format_check3",
 									"type": "DatasetReference",
 									"parameters": {
 										"container_name": {
-											"value": "@item().container_name",
+											"value": "@item().container",
 											"type": "Expression"
 										},
 										"folder_name": {
-											"value": "@concat(item().folder_name,'/',item().file_name)",
+											"value": "@concat(item().container,'/',item().root_folder,'/',item().folders)",
 											"type": "Expression"
 										}
 									}
@@ -83,7 +83,6 @@
 								],
 								"storeSettings": {
 									"type": "AzureBlobFSReadSettings",
-									"recursive": true,
 									"enablePartitionDiscovery": false
 								},
 								"formatSettings": {
