@@ -1948,7 +1948,8 @@
 								"referenceName": "ds_f1_formula_lookup_metadata",
 								"type": "DatasetReference",
 								"parameters": {}
-							}
+							},
+							"firstRowOnly": false
 						}
 					},
 					{
@@ -1965,7 +1966,7 @@
 						"userProperties": [],
 						"typeProperties": {
 							"items": {
-								"value": "@activity('lkp_f1_metadata').output.firstRow.files",
+								"value": "@activity('lkp_f1_metadata').output.value",
 								"type": "Expression"
 							},
 							"isSequential": true,
@@ -2090,7 +2091,10 @@
 														"referenceName": "ds_json_multiple1",
 														"type": "DatasetReference",
 														"parameters": {
-															"container_name": "@item().container_name",
+															"container_name": {
+																"value": "@item().container",
+																"type": "Expression"
+															},
 															"folder_name": {
 																"value": "@concat(item().folder_name,'/',item().file_name)",
 																"type": "Expression"
@@ -2192,7 +2196,10 @@
 														"referenceName": "ds_f1_formula_single_json_source",
 														"type": "DatasetReference",
 														"parameters": {
-															"container_name": "@item().container_name",
+															"container_name": {
+																"value": "@item().container",
+																"type": "Expression"
+															},
 															"folder_name": "@concat(item().folder_name,'/',item().file_name)",
 															"file_name": {
 																"value": "@concat(item().file_name,'.json')",
@@ -2304,7 +2311,7 @@
 														"type": "DatasetReference",
 														"parameters": {
 															"container_name": {
-																"value": "@item().container_name",
+																"value": "@item().container",
 																"type": "Expression"
 															},
 															"folder_name": {
@@ -2420,46 +2427,6 @@
 											}
 										]
 									}
-								},
-								{
-									"name": "gm_f1_formula_file_metadata_copy1",
-									"type": "GetMetadata",
-									"dependsOn": [],
-									"policy": {
-										"timeout": "0.12:00:00",
-										"retry": 0,
-										"retryIntervalInSeconds": 30,
-										"secureOutput": false,
-										"secureInput": false
-									},
-									"userProperties": [],
-									"typeProperties": {
-										"dataset": {
-											"referenceName": "ds_format_check3",
-											"type": "DatasetReference",
-											"parameters": {
-												"container_name": {
-													"value": "@item().container",
-													"type": "Expression"
-												},
-												"folder_name": {
-													"value": "@concat(item().folder_name,'/',item().file_name)",
-													"type": "Expression"
-												}
-											}
-										},
-										"fieldList": [
-											"childItems"
-										],
-										"storeSettings": {
-											"type": "AzureBlobFSReadSettings",
-											"recursive": true,
-											"enablePartitionDiscovery": false
-										},
-										"formatSettings": {
-											"type": "BinaryReadSettings"
-										}
-									}
 								}
 							]
 						}
@@ -2478,7 +2445,7 @@
 						"userProperties": [],
 						"typeProperties": {
 							"items": {
-								"value": "@activity('lkp_f1_metadata').output.firstRow",
+								"value": "@activity('lkp_f1_metadata').output.value",
 								"type": "Expression"
 							},
 							"isSequential": true,
