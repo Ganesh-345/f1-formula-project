@@ -129,7 +129,7 @@
 													{
 														"name": "source_file_name",
 														"value": {
-															"value": "@concat(item().folder_name,'/',item().file_name,'/',item().file_name,'.json')",
+															"value": "@concat(split(item().folder_name,'/')[1],'.json')",
 															"type": "Expression"
 														}
 													},
