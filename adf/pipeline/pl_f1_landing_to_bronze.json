@@ -281,9 +281,12 @@
 														"value": "@item().container",
 														"type": "Expression"
 													},
-													"folder_name": "@concat(item().folder_name,'/',item().file_name)",
+													"folder_name": {
+														"value": "@concat(item().folder_name)",
+														"type": "Expression"
+													},
 													"file_name": {
-														"value": "@concat(item().file_name,'.json')",
+														"value": "@concat(item().file_name)",
 														"type": "Expression"
 													}
 												}
@@ -396,11 +399,11 @@
 														"type": "Expression"
 													},
 													"folder_name": {
-														"value": "@concat(item().folder_name,'/',item().file_name)",
+														"value": "@concat(item().folder_name)",
 														"type": "Expression"
 													},
 													"file_name": {
-														"value": "@concat(item().file_name,'.csv')",
+														"value": "@concat(item().file_name)",
 														"type": "Expression"
 													}
 												}
