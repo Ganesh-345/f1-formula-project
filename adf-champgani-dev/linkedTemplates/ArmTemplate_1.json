@@ -1857,11 +1857,11 @@
 														"type": "DatasetReference",
 														"parameters": {
 															"folder_name": {
-																"value": "@concat(item().folder_name,'/',item().file_name)",
+																"value": "@concat(item().folder_name)",
 																"type": "Expression"
 															},
 															"file_name": {
-																"value": "@concat(item().file_name,'.parquet')",
+																"value": "@concat(split(item().file_name,'.')[0],'.parquet')",
 																"type": "Expression"
 															}
 														}
@@ -1963,11 +1963,11 @@
 														"type": "DatasetReference",
 														"parameters": {
 															"folder_name": {
-																"value": "@concat(item().folder_name,'/',item().file_name)",
+																"value": "@concat(item().folder_name)",
 																"type": "Expression"
 															},
 															"file_name": {
-																"value": "@concat(item().file_name,'.parquet')",
+																"value": "@concat(split(item().file_name,'.')[0],'.parquet')",
 																"type": "Expression"
 															}
 														}
@@ -2080,11 +2080,11 @@
 														"type": "DatasetReference",
 														"parameters": {
 															"folder_name": {
-																"value": "@concat(item().folder_name,'/',item().file_name)",
+																"value": "@concat(item().folder_name)",
 																"type": "Expression"
 															},
 															"file_name": {
-																"value": "@concat(item().file_name,'.parquet')",
+																"value": "@concat(split(item().file_name,'.')[0],'.parquet')",
 																"type": "Expression"
 															}
 														}
@@ -2183,6 +2183,8 @@
 					{
 						"name": "ForEach1",
 						"type": "ForEach",
+						"state": "Inactive",
+						"onInactiveMarkAs": "Succeeded",
 						"dependsOn": [
 							{
 								"activity": "lkp_f1_metadata",
