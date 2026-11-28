@@ -1742,7 +1742,7 @@
 													"type": "Expression"
 												},
 												"folder_name": {
-													"value": "@concat(item().folder_name,'/',item().file_name)",
+													"value": "@concat(item().folder_name)",
 													"type": "Expression"
 												}
 											}
