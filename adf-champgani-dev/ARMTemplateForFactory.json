@@ -1993,7 +1993,7 @@
 													"type": "Expression"
 												},
 												"folder_name": {
-													"value": "item().folder_name",
+													"value": "@item().folder_name",
 													"type": "Expression"
 												}
 											}
