@@ -1,0 +1,42 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "adf-champgani-dev"
+		},
+		"ls_stdevdatalake_AzureBlob_Storage_connectionString": {
+			"value": ""
+		},
+		"ls_stdevelopmentgani_accountKey": {
+			"value": ""
+		},
+		"AzureSqlDatabase1_properties_typeProperties_server": {
+			"value": "ganesh-dev-platform01.database.windows.net"
+		},
+		"AzureSqlDatabase1_properties_typeProperties_database": {
+			"value": "@{linkedService().database}"
+		},
+		"AzureSqlDatabase1_properties_typeProperties_userName": {
+			"value": "champgani"
+		},
+		"ls_databricks_properties_typeProperties_existingClusterId": {
+			"value": "1126-165018-1p6wq2sb"
+		},
+		"ls_github_properties_typeProperties_username": {
+			"value": "Ganesh-345"
+		},
+		"ls_keyvault_properties_typeProperties_baseUrl": {
+			"value": "https://kv-champgani-dev.vault.azure.net/"
+		},
+		"ls_stdevelopmentgani_properties_typeProperties_url": {
+			"value": "https://stdevelopmentgani.dfs.core.windows.net/"
+		},
+		"containerUri": {
+			"value": ""
+		},
+		"containerSasToken": {
+			"value": ""
+		}
+	}
+}
